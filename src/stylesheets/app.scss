@@ -1,27 +1,24 @@
-@import "base/typography";
+@import "base/normalize";
 
-#letter-c {
-  stroke-width: 2px;
-}
+@import "utilities/functions";
+@import "utilities/variables";
+@import "utilities/mixins";
+@import "utilities/media-queries";
+@import "utilities/grid";
 
-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+@import "base/base";
 
-.animation {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
+@import "typography/font-face";
+@import "typography/typography";
+@import "typography/headings";
 
-  &.is-visible {
-    opacity: 1;
-  }
-}
+@import "atoms/btn";
 
-#slider {
-  width: 30rem;
-  margin-top: 1rem;
-}
+@import "molecules/layout";
+@import "molecules/slider";
+@import "molecules/controls";
+
+@import "organisms/header";
+@import "organisms/container";
+@import "organisms/footer";
+@import "organisms/animation";

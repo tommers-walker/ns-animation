@@ -1,2 +1,5 @@
 import { animation } from './modules/animation'
-animation.init();
+
+document.addEventListener("DOMContentLoaded", function(event) {
+  animation.init();
+});
