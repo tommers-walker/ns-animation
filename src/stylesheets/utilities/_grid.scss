@@ -1,0 +1,100 @@
+@mixin flex-grid($direction: row, $align: flex-start, $justify: flex-start, $gutters: true) {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+
+  @if $gutters == true {
+    margin-left: -$gtr-half;
+    margin-right: -$gtr-half;
+  }
+}
+
+@mixin flex-span($columns-span, $gutters: true) {
+  @if $gutters {
+    width: calc(#{percentage($columns-span / $cols)} - #{$gtr});
+    margin: $gtr-half;
+  } @else {
+    width: #{percentage($columns-span / $cols)};
+  }
+}
+
+@mixin flex-offset($columns, $right: false) {
+  @if $right {
+    margin-right: calc(#{percentage($columns / $cols)} + #{$gtr-half});
+  } @else {
+    margin-left: calc(#{percentage($columns / $cols)} + #{$gtr-half});
+  }
+}
+
+.grid {
+  @include flex-grid;
+}
+
+.grid-no-gtr {
+  @include flex-grid($gutters: false);
+}
+
+.grid,
+.grid-no-gtr {
+  &--a-s { align-items: flex-start; }
+  &--a-c { align-items: center; }
+  &--a-e { align-items: flex-end; }
+  &--a-st { align-items: stretch; }
+
+  &--j-s { justify-content: flex-start; }
+  &--j-c { justify-content: center; }
+  &--j-e { justify-content: flex-end; }
+  &--j-sb { justify-content: space-between; }
+}
+
+.col {
+  .grid & {
+    @include flex-span(12);
+  }
+
+  .grid-no-gtr & {
+    @include flex-span(12, $gutters: false);
+  }
+}
+
+@each $size, $mq in $breakpoints {
+  .col-#{$size} {
+    @include media($mq) {
+      @for $i from 1 through 12 {
+        &-#{$i} {
+          .grid-no-gtr & {
+            @include flex-span($i, $gutters: false);
+          }
+
+          .grid & {
+            @include flex-span($i);
+          }
+        }
+      }
+    }
+  }
+
+  .grid {
+    .offset-#{$size} {
+      @include media($mq) {
+        @for $i from 1 through 12 {
+          &-#{$i} {
+            @include flex-offset($i);
+          }
+        }
+      }
+    }
+
+    .offset-r-#{$size} {
+      @include media($mq) {
+        @for $i from 1 through 12 {
+          &-#{$i} {
+            @include flex-offset($i, $right: true);
+          }
+        }
+      }
+    }
+  }
+}

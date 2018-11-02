@@ -1,0 +1,29 @@
+.slider {
+  width: 30rem;
+  margin-top: $gtr-dbl;
+  margin-bottom: $gtr-dbl;
+  appearance: none;
+}
+
+.slider {
+  appearance: none;
+  width: 100%;
+  max-width: $max-width/2;
+  height: rem(3);
+  background-color: $black;
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: rem(30);
+  height: rem(30);
+  background-color: $black;
+}
+
+.slider::-moz-range-thumb {
+  width: rem(30);
+  height: rem(30);
+  border-radius: 50%;
+  background-color: $black;
+}
