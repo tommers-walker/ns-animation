@@ -57,7 +57,7 @@ const animation = {
       transformOrigin:"50% 50%"
     }, "-=0.1")
 
-    const NTl = new TimelineMax();
+    const NTl = new TimelineLite();
     NTl
     .fromTo(letter_N, 1, {
       opacity:0,
@@ -105,13 +105,13 @@ const animation = {
       repeat:1
     })
 
-    const cTl = new TimelineMax();
+    const cTl = new TimelineLite();
     cTl
     .from(letter_c, 1, {drawSVG:"0"})
     .to(letter_c, 0.1, {stroke:"#FFF", strokeWidth:0})
     .to(letter_c, 0.5, {fill:"#000"}, "-=0.2")
 
-    const eTl = new TimelineMax();
+    const eTl = new TimelineLite();
     eTl
     .fromTo(letter_e, 1, {
       x:-500,
@@ -123,6 +123,8 @@ const animation = {
       ease:Elastic.easeOut.config(1, 0.75)
     })
 
+    const andTl = new TimelineLite();
+
     const aTl = new TimelineMax();
     aTl
     .from(letter_a, 0.1, {
@@ -130,7 +132,7 @@ const animation = {
       y:-200,
       ease:Power1.easeIn
     })
-    .to(letter_a, .1, {
+    .to(letter_a, 0.1, {
       transformOrigin: "50% 100%",
       scaleY:0.75,
       scaleX:1.25,
@@ -145,7 +147,7 @@ const animation = {
       y:-200,
       ease:Power1.easeIn
     })
-    .to(letter_n, .1, {
+    .to(letter_n, 0.1, {
       transformOrigin: "50% 100%",
       scaleY:0.75,
       scaleX:1.25,
@@ -160,13 +162,15 @@ const animation = {
       y:-200,
       ease:Power1.easeIn
     })
-    .to(letter_d, .1, {
+    .to(letter_d, 0.1, {
       transformOrigin: "50% 100%",
       scaleY:0.75,
       scaleX:1.25,
       yoyo:true,
       repeat:1
     })
+
+    andTl.add([aTl, nTl, dTl], 0, "start", 0.075)
 
     const STl = new TimelineMax();
     STl
@@ -222,57 +226,38 @@ const animation = {
       repeat:1
     })
 
-    const rTl = new TimelineMax();
+    const rTl = new TimelineLite();
     rTl
     .from(letter_r, 0.3, {drawSVG:"0"})
     .to(letter_r, 0.1, {stroke:"#FFF", strokeWidth:0})
     .to(letter_r, 0.5, {fill:"#000"}, "-=0.2")
 
-    const i2Tl = new TimelineMax();
+    const i2Tl = new TimelineLite();
     i2Tl
     .from(letter_i_2_line, 0.1, {
       opacity: 0,
       y:200,
     })
-    .fromTo(letter_i_2_dot, 0.2, {
+    .fromTo(letter_i_2_dot, 0.6, {
       opacity:0,
-      y:-200,
-    },
-    {
-      opacity:1,
-      y:0,
-      ease:Power1.easeIn
-    })
-    .to(letter_i_2_dot, 0.1, {
-      transformOrigin: "50% 100%",
-      scaleY:0.75,
-      scaleX:1.25,
-      yoyo:true,
-      repeat:1
-    })
-    .to(letter_i_2_dot, 0.2, {
-      y:-150,
-      ease:Circ.easeOut,
-      yoyo:true,
-      repeat:1
-    })
-    .to(letter_i_2_dot, 0.1, {
-      transformOrigin: "50% 100%",
-      scaleY:0.75,
-      scaleX:1.25,
-      yoyo:true,
-      repeat:1
-    })
-
-    const oTl = new TimelineMax();
-    oTl
-    .fromTo(letter_o, 0.05, {
-      opacity:0
+      scale:0,
+      transformOrigin: "50% 50%"
     }, {
       opacity:1,
-      yoyo:true,
-      repeat:12,
-      ease:RoughEase.ease.config({ template:  Power0.easeNone, strength: 1, points: 20, taper: "none", randomize:  true, clamp: false}),
+      scale:1,
+      ease:Elastic.easeOut.config(1, 0.3)
+    })
+
+    const oTl = new TimelineLite();
+    oTl
+    .fromTo(letter_o, 0.6, {
+      opacity:0,
+      scale:0,
+      transformOrigin: "50% 50%"
+    }, {
+      opacity:1,
+      scale:1,
+      ease:Elastic.easeOut.config(1, 0.3)
     })
 
     const uTl = new TimelineMax();
@@ -286,7 +271,7 @@ const animation = {
       x:0
     })
     .to(letter_u, 0.1, {
-      skewX:-15,
+      skewX:-10,
       transformOrigin: "100% 100%",
       yoyo:true,
       repeat:1
@@ -347,7 +332,7 @@ const animation = {
       repeat:1
     })
 
-    const masterTl = new TimelineMax({
+    const masterTl = new TimelineLite({
       paused:true,
       onUpdate:updateSlider,
       onComplete: function() {
@@ -357,10 +342,11 @@ const animation = {
 
     masterTl.set([pauseIcon, repeatIcon], {opacity:0, scale:0, transformOrigin:"50% 50%"})
     masterTl.set([letter_c, letter_r, letter_s_2], {fill:"#FFF", stroke:"#000", strokeWidth:2})
-    masterTl.add([NTl, iTl, cTl, eTl, aTl, nTl, dTl, STl, e2Tl, rTl, i2Tl, oTl, uTl], 0, "start", 0.2)
-    masterTl.add(s2Tl, "-=1.8")
+    masterTl.add([NTl, iTl, cTl, eTl, andTl, STl, e2Tl, rTl, i2Tl, oTl, uTl], 0, "start", 0.2)
+    masterTl.add(s2Tl, "-=1.5")
     container.classList += ' is-visible';
     controls.classList += ' is-visible';
+    masterTl.timeScale(0.9)
     masterTl.play()
 
     slider.addEventListener('input', function(e) {
