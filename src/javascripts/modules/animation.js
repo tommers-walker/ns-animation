@@ -27,35 +27,25 @@ const letter_s_2 = document.querySelector('#letter-s-2');
 
 const animation = {
   init() {
+    const swapControlIcon = (iconToHide, iconToShow) => {
+      const iconTl = new TimelineLite();
+
+      iconTl
+      .to(iconToHide, 0.1, {
+        opacity:0,
+        scale:0,
+        transformOrigin:"50% 50%"
+      })
+      .to(iconToShow, 0.1, {
+        opacity:1,
+        scale:1,
+        transformOrigin:"50% 50%"
+      }, '-=0.1')
+    }
+
     const updateSlider = () => {
       slider.value = masterTl.progress();
     }
-
-    const playToPauseTl = new TimelineLite({paused:true})
-    playToPauseTl
-    .to(playIcon, 0.1, {
-      opacity:0,
-      scale:0,
-      transformOrigin:"50% 50%",
-    })
-    .to(pauseIcon, 0.1, {
-      opacity:1,
-      scale:1,
-      transformOrigin:"50% 50%"
-    }, "-=0.1")
-
-    const playToRepeatTl = new TimelineLite({paused:true})
-    playToRepeatTl
-    .to(playIcon, 0.1, {
-      opacity:0,
-      scale:0,
-      transformOrigin:"50% 50%",
-    })
-    .to(repeatIcon, 0.1, {
-      opacity:1,
-      scale:1,
-      transformOrigin:"50% 50%"
-    }, "-=0.1")
 
     const NTl = new TimelineLite();
     NTl
@@ -335,8 +325,17 @@ const animation = {
     const masterTl = new TimelineLite({
       paused:true,
       onUpdate:updateSlider,
+      onStart: function() {
+        if (!masterTl.paused()) {
+          swapControlIcon(playIcon, pauseIcon)
+        }
+      },
       onComplete: function() {
-        playToRepeatTl.play();
+        if (!masterTl.paused()) {
+          swapControlIcon(pauseIcon, repeatIcon)
+        } else {
+          swapControlIcon(playIcon, repeatIcon)
+        }
       }
     })
 
@@ -355,10 +354,10 @@ const animation = {
 
     playBtn.addEventListener('click', () => {
       masterTl.paused(!masterTl.paused());
+
       if (masterTl.progress() != 1) {
-        masterTl.paused() ? playToPauseTl.play() : playToPauseTl.reverse()
+        masterTl.paused() ? swapControlIcon(pauseIcon, playIcon) : swapControlIcon(playIcon, pauseIcon)
       } else {
-        playToRepeatTl.reverse();
         masterTl.restart();
       }
     })
