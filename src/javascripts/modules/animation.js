@@ -104,10 +104,12 @@ const animation = {
     const eTl = new TimelineLite();
     eTl
     .fromTo(letter_e, 1, {
+      opacity: 0,
       x:-500,
       rotation:0,
       transformOrigin: "50% 50%"
     }, {
+      opacity: 1,
       x:0,
       rotation:720,
       ease:Elastic.easeOut.config(1, 0.75)
